@@ -1,0 +1,85 @@
+generated: '2026-08-09'
+method: probed
+source: https://cardiosense.com/robots.txt
+description: >-
+  Cardiosense's observed policy toward machine and agent traffic, read from the
+  documents it actually serves. This is NOT an x-agentic-access execution
+  contract — Cardiosense publishes no API operations to classify — so it is
+  deliberately not wired as `type: AgenticAccess` in apis.yml. It records
+  posture, not permissions.
+
+crawler_policy:
+  file: cardiosense-robots.txt
+  status: 200
+  default_agent:
+    disallow: [/wp-admin/]
+    allow: [/wp-admin/admin-ajax.php]
+    crawl_delay: 10
+  ai_crawlers:
+    stance: explicit-allow
+    comment_in_file: 'AI crawlers — Cardiosense welcomes AI indexing for clinical awareness'
+    allowed:
+      - GPTBot
+      - ClaudeBot
+      - anthropic-ai
+      - PerplexityBot
+      - Googlebot-Extended
+      - CCBot
+      - Bytespider
+    note: >-
+      Every named AI user-agent is granted Allow: / — including CCBot and
+      Bytespider, which many publishers block. There is no Disallow for any AI
+      agent and no AIPREF or Content-Signals header, so the allowance is
+      expressed only in robots.txt.
+  sitemap: https://cardiosense.com/wp-sitemap.xml
+  sitemap_note: >-
+    robots.txt points at /wp-sitemap.xml, while /sitemap.xml also resolves 200.
+    The index lists two child sitemaps covering 8 pages plus news posts.
+
+agent_surfaces:
+  - surface: llms.txt
+    url: https://cardiosense.com/llms.txt
+    status: 200
+    open: true
+    note: Hand-authored index of company, product, technology and key pages.
+  - surface: llms-full.txt
+    url: https://cardiosense.com/llms-full.txt
+    status: 200
+    open: true
+    note: >-
+      Extended AI-context document. Held locally, not committed — see
+      .gitignore.
+  - surface: mcp
+    url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
+    status: 401
+    open: false
+    note: OAuth-gated. See ../mcp/cardiosense-mcp.yml.
+  - surface: site chatbot
+    url: https://cardiosense.com/wp-json/cs-chatbot/v1/chat
+    status: not-probed
+    open: unknown
+    note: >-
+      First-party route backing the "Chat with us" assistant the site uses in
+      place of a contact form. Not exercised — a POST here bills an LLM call
+      and the sibling /intent/* routes create records.
+
+reading:
+  posture: >-
+    Cardiosense is unusually forward-leaning on the READ side of agent access
+    for a clinical device company — an explicit AI-crawler welcome, a real
+    llms.txt, an extended context document, and a deployed MCP server — while
+    publishing nothing at all on the WRITE side: no API, no tool list, no scope
+    semantics, no client onboarding path. The agent surface is open to read and
+    closed to act, and nothing tells an agent developer which is which.
+
+x-evidence:
+  fetched: '2026-08-09'
+  probes:
+    - url: https://cardiosense.com/robots.txt
+      status: 200
+    - url: https://cardiosense.com/wp-sitemap.xml
+      status: 200
+    - url: https://cardiosense.com/llms.txt
+      status: 200
+    - url: https://cardiosense.com/llms-full.txt
+      status: 200

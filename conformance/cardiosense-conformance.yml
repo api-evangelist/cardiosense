@@ -1,0 +1,181 @@
+generated: '2026-08-09'
+method: searched
+source: https://cardiosense.com/regulatory/
+description: >-
+  Two very different kinds of conformance are recorded here, and they should
+  not be read as one number. Cardiosense's REGULATORY conformance is strong and
+  published — FDA Class II authorization for both the device and the software,
+  a quality system claimed against 21 CFR 820 and ISO 13485. Its API/protocol
+  conformance is thin by comparison and consists entirely of the OAuth and MCP
+  discovery documents that sit in front of an otherwise undocumented endpoint.
+  There is no OpenAPI, no vocabulary and no tag set to derive further
+  conformance from.
+
+standards:
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: true
+    evidence:
+      url: https://cardiosense.com/.well-known/oauth-authorization-server
+      http_status: 200
+      note: >-
+        Serves a valid metadata document at the registered well-known path with
+        issuer, authorization_endpoint, token_endpoint and revocation_endpoint.
+
+  - id: rfc9728
+    name: OAuth 2.0 Protected Resource Metadata
+    conforms: true
+    evidence:
+      url: https://cardiosense.com/.well-known/oauth-protected-resource
+      http_status: 200
+      note: >-
+        Names the protected resource and its authorization server, and declares
+        bearer_methods_supported. Consistent with the AS document.
+
+  - id: rfc7636
+    name: PKCE for OAuth Public Clients
+    conforms: true
+    evidence:
+      source: /.well-known/oauth-authorization-server
+      note: >-
+        code_challenge_methods_supported = ["S256"] only, with
+        token_endpoint_auth_methods_supported = ["none"] — PKCE is effectively
+        mandatory, which is the correct posture for a public agent client.
+
+  - id: rfc7591
+    name: OAuth 2.0 Dynamic Client Registration
+    conforms: false
+    evidence:
+      note: >-
+        No registration_endpoint is advertised. The server instead sets
+        client_id_metadata_document_supported = true, so clients are not
+        dynamically registered.
+
+  - id: oidc
+    name: OpenID Connect Discovery
+    conforms: false
+    evidence:
+      url: https://cardiosense.com/.well-known/openid-configuration
+      http_status: 404
+
+  - id: mcp
+    name: Model Context Protocol
+    conforms: partial
+    evidence:
+      url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
+      http_status: 401
+      note: >-
+        A streamable-HTTP MCP endpoint exists and correctly rejects anonymous
+        JSON-RPC with an MCP-shaped 401 plus published OAuth discovery. The
+        protocol version could not be confirmed because `initialize` is itself
+        gated, so conformance to a specific MCP revision is unverified.
+
+  - id: llmstxt
+    name: llms.txt
+    conforms: true
+    evidence:
+      url: https://cardiosense.com/llms.txt
+      http_status: 200
+      note: >-
+        Hand-authored, company-specific, and structured to the convention
+        (H1, blockquote summary, sectioned links, an Optional section pointing
+        at llms-full.txt). Not template boilerplate.
+
+  - id: a2a
+    name: A2A Agent Card
+    conforms: false
+    evidence:
+      url: https://cardiosense.com/.well-known/agent-card.json
+      http_status: 404
+
+  - id: openapi
+    name: OpenAPI
+    conforms: false
+    evidence:
+      note: >-
+        No OpenAPI, Swagger, GraphQL SDL, AsyncAPI or Postman collection is
+        published on any Cardiosense host. See x-coverage in apis.yml.
+
+  - id: rfc9457
+    name: Problem Details for HTTP APIs
+    conforms: false
+    evidence:
+      note: >-
+        Errors observed on the public surface use the WordPress REST envelope
+        ({code, message, data.status}), not application/problem+json.
+
+  - id: rfc9116
+    name: security.txt
+    conforms: false
+    evidence:
+      url: https://cardiosense.com/.well-known/security.txt
+      http_status: 404
+
+compliance:
+  description: >-
+    Published regulatory and quality claims, quoted from the company's own
+    Regulatory page. These are the company's statements; API Evangelist has not
+    audited them.
+  regime: medical-device
+  claims:
+    - id: fda-class-ii
+      name: FDA Class II medical device authorization
+      status: claimed
+      detail: >-
+        "The following Cardiosense devices are authorized for sale and
+        distribution in the US by the FDA as Class II medical devices" —
+        the CardioTag™ Device (wearable SCG/ECG/PPG sensor) and the PCWP
+        Analysis Software (standalone AI software-as-a-medical-device).
+      source: https://cardiosense.com/regulatory/
+    - id: fda-de-novo
+      name: FDA De Novo classification
+      status: claimed
+      detail: >-
+        Site-wide announcement: "Cardiosense Receives FDA De Novo
+        Classification for Novel Cardiac Technology Designed to Improve Care
+        for Patients with Heart Failure."
+      source: https://cardiosense.com/regulatory/
+    - id: 21-cfr-820
+      name: FDA Quality System Regulation (21 CFR 820)
+      status: claimed
+      detail: >-
+        "Cardiosense operates under a Quality Management System compliant to
+        21 CFR 820 and ISO 13485."
+      source: https://cardiosense.com/regulatory/
+    - id: iso-13485
+      name: ISO 13485 Medical devices — quality management systems
+      status: claimed
+      detail: Named in the same quality-management-system statement as 21 CFR 820.
+      source: https://cardiosense.com/regulatory/
+  not_claimed:
+    - id: soc2
+      note: No SOC 2 claim found anywhere on the site.
+    - id: iso27001
+      note: No ISO 27001 claim found.
+    - id: hipaa
+      note: >-
+        No HIPAA statement on the Regulatory page. The Privacy Policy was not
+        parsed for a covered-entity/business-associate claim.
+    - id: hitrust
+      note: No HITRUST claim found.
+  gap: >-
+    A prescription-use clinical device with an AI SaMD component publishes no
+    information-security certification, no trust center, and no vulnerability
+    disclosure policy — the regulatory posture and the security-communication
+    posture are far apart.
+
+x-evidence:
+  fetched: '2026-08-09'
+  probes:
+    - url: https://cardiosense.com/regulatory/
+      status: 200
+    - url: https://cardiosense.com/.well-known/oauth-authorization-server
+      status: 200
+    - url: https://cardiosense.com/.well-known/oauth-protected-resource
+      status: 200
+    - url: https://cardiosense.com/.well-known/openid-configuration
+      status: 404
+    - url: https://cardiosense.com/.well-known/security.txt
+      status: 404
+    - url: https://cardiosense.com/.well-known/agent-card.json
+      status: 404

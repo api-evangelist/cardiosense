@@ -1,0 +1,82 @@
+generated: '2026-08-09'
+method: probed
+source: https://cardiosense.com/.well-known/
+description: >-
+  Result of probing every RFC-registered /.well-known/ path the enrichment
+  pipeline checks against the single Cardiosense host (cardiosense.com). Two
+  paths return real documents: the OAuth 2.0 Authorization Server Metadata
+  (RFC 8414) and the OAuth 2.0 Protected Resource Metadata (RFC 9728) that
+  together describe the authorization surface in front of the site's Model
+  Context Protocol server. Everything else is absent. Note that a miss on this
+  host returns HTTP 404 with a WordPress HTML 404 page, not a JSON error, so
+  each hit below was confirmed by parsing the body as JSON.
+host: cardiosense.com
+probed:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: cardiosense-oauth-authorization-server.json
+    note: >-
+      RFC 8414 Authorization Server Metadata. Advertises authorization_code +
+      refresh_token grants, PKCE S256 only, a single `mcp` scope, and
+      `token_endpoint_auth_methods_supported: ["none"]` (public clients), plus
+      `client_id_metadata_document_supported: true`.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: cardiosense-oauth-protected-resource.json
+    note: >-
+      RFC 9728 Protected Resource Metadata. Names the protected resource as
+      https://cardiosense.com/wp-json/mcp/mcp-oauth-server and points back at
+      https://cardiosense.com as its authorization server.
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+    note: No RFC 9116 security.txt is published. Origin returned a bare nginx 404.
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+    note: No RFC 9727 API catalog document.
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+    note: >-
+      No A2A Agent Card. Body was the WordPress HTML 404 page, so this is a
+      genuine miss and not an SPA catch-all false positive.
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+    note: Legacy pre-0.3 A2A path also absent.
+  - path: /.well-known/mcp.json
+    status: 404
+    file: null
+    note: >-
+      MCP discovery is done through /.well-known/oauth-protected-resource here,
+      not a well-known MCP manifest.
+also_probed:
+  - path: /llms.txt
+    status: 200
+    file: ../llms/cardiosense-llms.txt
+  - path: /llms-full.txt
+    status: 200
+    note: >-
+      Extended AI context document. Saved locally but deliberately not
+      committed (see .gitignore) and not wired as a pointer.
+  - path: /robots.txt
+    status: 200
+    file: ../agentic-access/cardiosense-robots.txt
+  - path: /apis.json
+    status: 404
+    file: null
+x-evidence:
+  fetched: '2026-08-09'
+  method: HTTP GET, redirects followed
+  note: >-
+    Both OAuth documents 301 to a trailing-slash URL before returning 200;
+    a probe that does not follow redirects will incorrectly record a miss.

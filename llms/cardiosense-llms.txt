@@ -1,0 +1,48 @@
+# Cardiosense
+
+> Cardiosense is a medical technology company based in Chicago, IL, developing AI-powered cardiac monitoring solutions. Our flagship product, the CardioTag™, is the world's first noninvasive Heart Failure monitoring device that delivers Pulmonary Capillary Wedge Pressure (PCWP) measurements at the point of care.
+
+## What We Do
+
+Cardiosense enables clinicians to more precisely and proactively manage Heart Failure patients by delivering hemodynamic data noninvasively — without the risks, costs, or complications of invasive monitoring.
+
+The CardioTag™ device and PCWP Analysis Software are FDA-cleared as a Class II medical device. The software is intended for prescription use under the supervision of a qualified healthcare professional, in conjunction with clinical history, symptoms, and other diagnostic tests.
+
+## Our Technology
+
+- **Wearable biosensor** — The CardioTag™ attaches to the patient’s chest and captures cardiac hemodynamic data at the point of care
+- **Noninvasive PCWP** — Pulmonary Capillary Wedge Pressure measured without invasive catheterization or implantable sensors
+- **AI signal processing** — Deep learning converts raw physiological data into clinical-grade intelligence
+- **Clinician portal** — Real-time trending and longitudinal tracking of PCWP data for clinical decision support
+- **Validated accuracy** — Accuracy on par with implantable sensors; validated against right heart catheterization (gold standard)
+
+## Clinical Applications
+
+- **ED Assessment & Triage** — Rapidly confirm Heart Failure at point-of-care to initiate medical therapy sooner and reduce hospitalization length-of-stay
+- **Inpatient Management & Discharge** — Drive informed clinical changes with routine PCWP assessment; discharge patients with confidence
+- **Transitions & Remote Monitoring** — Monitor PCWP remotely during the highest-risk post-discharge window; detect worsening HF early; optimize GDMT
+
+## Company
+
+- **Headquarters:** 400 N Aberdeen St Suite 1050, Chicago, IL 60642
+- **General Inquiries:** contact@cardiosense.com | (312) 809-9075
+- **CEO:** Eric Meizlish
+- **EVP & CMO:** John Martin, MD
+- **Co-Founder & CTO:** Andrew Carek, PhD
+- **Co-Founder & CSO:** Omer Inan, PhD
+- **Co-Founder & Advisor:** Amit Gupta
+- **Co-Founder & Head of AI:** Mozziyar Etemadi, MD, PhD
+- **VP Compliance & Program Management:** Arezou Azar, PhD
+- **VP, Commercial:** Chris Gornick
+
+## Key Pages
+
+- [Homepage](https://cardiosense.com/) — CardioTag™ overview and clinical approach
+- [About & Team](https://cardiosense.com/about/) — Leadership, mission, and company story
+- [Publications](https://cardiosense.com/publications/) — Peer-reviewed research and clinical validation studies
+- [Regulatory](https://cardiosense.com/regulatory/) — FDA clearance and regulatory information
+- [Careers](https://cardiosense.com/about/#careers) — Open positions at Cardiosense
+
+## Optional
+
+- [Extended AI Context](https://cardiosense.com/llms-full.txt) — Deep-dive document with regulatory detail, publications list, and full leadership bios

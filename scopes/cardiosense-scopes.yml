@@ -1,0 +1,47 @@
+generated: '2026-08-09'
+method: probed
+source: https://cardiosense.com/.well-known/oauth-authorization-server
+description: >-
+  The complete OAuth scope surface Cardiosense advertises. It is one scope.
+  Both the RFC 8414 authorization server metadata and the RFC 9728 protected
+  resource metadata declare the identical single-entry list, and there is no
+  scope reference page anywhere on the site to enrich it from.
+docs: null
+docs_note: >-
+  No scopes/permissions reference page is published. SEARCHed the site,
+  llms.txt, and llms-full.txt — none of them mention scopes, tokens, or the
+  MCP endpoint at all.
+
+scopes:
+  - name: mcp
+    description: >-
+      Access to the Cardiosense Model Context Protocol server at
+      /wp-json/mcp/mcp-oauth-server. The scope name is all that is published;
+      Cardiosense documents no semantics for it — no read/write split, no
+      resource qualification, and no statement of what an `mcp`-scoped token
+      is permitted to do.
+    granularity: coarse
+    read_write: undocumented
+    source: /.well-known/oauth-authorization-server + /.well-known/oauth-protected-resource
+
+coverage:
+  scopes_declared: 1
+  scopes_documented: 0
+  note: >-
+    A single coarse scope means an agent client cannot request least privilege:
+    the only grant available is all-or-nothing access to the MCP server.
+
+observations:
+  - Both discovery documents agree, so this is not a metadata drift case.
+  - No incremental authorization, no scope-per-tool mapping, no consent-screen copy is published.
+  - Because tools/list is itself gated (HTTP 401), it is not possible to check what the `mcp` scope actually unlocks without credentials.
+
+x-evidence:
+  fetched: '2026-08-09'
+  probes:
+    - url: https://cardiosense.com/.well-known/oauth-authorization-server
+      status: 200
+    - url: https://cardiosense.com/.well-known/oauth-protected-resource
+      status: 200
+    - url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
+      status: 401
