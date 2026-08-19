@@ -2,107 +2,102 @@ generated: '2026-08-09'
 method: probed
 source: https://cardiosense.com/wp-json/mcp
 status: live-gated
-description: >-
-  Cardiosense serves a live Model Context Protocol server from its own primary
-  host. It is not a product API: Cardiosense sells an FDA-cleared Class II
-  cardiac monitoring device, not a developer platform, and this MCP surface is
-  a WordPress MCP Adapter deployment sitting over the corporate website's
-  content and abilities. It is nonetheless a real, deliberately configured
-  agent surface — the company registered an OAuth authorization server, an
-  RFC 9728 protected-resource document, and a dedicated `mcp` scope for it.
-  Both servers reject anonymous JSON-RPC, so the tool list and per-tool
-  inputSchemas could not be enumerated without credentials.
-
+description: 'Cardiosense serves a live Model Context Protocol server from its own primary host. It is
+  not a product API: Cardiosense sells an FDA-cleared Class II cardiac monitoring device, not a developer
+  platform, and this MCP surface is a WordPress MCP Adapter deployment sitting over the corporate website''s
+  content and abilities. It is nonetheless a real, deliberately configured agent surface — the company
+  registered an OAuth authorization server, an RFC 9728 protected-resource document, and a dedicated `mcp`
+  scope for it. Both servers reject anonymous JSON-RPC, so the tool list and per-tool inputSchemas could
+  not be enumerated without credentials.'
 servers:
-  - name: mcp-oauth-server
-    url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
-    transport: streamable-http
-    methods: [POST, GET, DELETE]
-    auth: oauth2
-    anonymous_probe:
-      request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
-      http_status: 401
-      body: '{"code":"mcp_unauthorized","message":"MCP authentication required.","data":{"status":401}}'
-    note: >-
-      This is the resource named by /.well-known/oauth-protected-resource.
-      `initialize` returns the same 401, so the protocol version could not be
-      negotiated anonymously either.
-  - name: mcp-adapter-default-server
-    url: https://cardiosense.com/wp-json/mcp/mcp-adapter-default-server
-    transport: streamable-http
-    methods: [POST, GET, DELETE]
-    auth: wordpress-cookie-or-application-password
-    anonymous_probe:
-      request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
-      http_status: 401
-      body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
-    note: >-
-      The MCP Adapter's default server. Rejected with the generic WordPress
-      REST permission error rather than the MCP-specific one, which indicates
-      it is gated on a logged-in WordPress capability rather than on the OAuth
-      flow.
-
+- name: mcp-oauth-server
+  url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
+  transport: streamable-http
+  methods:
+  - POST
+  - GET
+  - DELETE
+  auth: oauth2
+  anonymous_probe:
+    request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    body: '{"code":"mcp_unauthorized","message":"MCP authentication required.","data":{"status":401}}'
+  note: This is the resource named by /.well-known/oauth-protected-resource. `initialize` returns the
+    same 401, so the protocol version could not be negotiated anonymously either.
+- name: mcp-adapter-default-server
+  url: https://cardiosense.com/wp-json/mcp/mcp-adapter-default-server
+  transport: streamable-http
+  methods:
+  - POST
+  - GET
+  - DELETE
+  auth: wordpress-cookie-or-application-password
+  anonymous_probe:
+    request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
+  note: The MCP Adapter's default server. Rejected with the generic WordPress REST permission error rather
+    than the MCP-specific one, which indicates it is gated on a logged-in WordPress capability rather
+    than on the OAuth flow.
 tools:
   status: unknown
-  reason: >-
-    tools/list is authenticated on both servers (HTTP 401). NO tool list is
-    recorded here — inventing one from the WordPress Abilities API would be
-    fabrication. The backing ability registry at
-    https://cardiosense.com/wp-json/wp-abilities/v1/abilities is likewise
-    gated (HTTP 401, rest_forbidden), so not even ability names are public.
-  to_resolve: >-
-    Authenticated introspection with an `mcp`-scoped token, or a published
-    tool list from Cardiosense.
-
+  reason: tools/list is authenticated on both servers (HTTP 401). NO tool list is recorded here — inventing
+    one from the WordPress Abilities API would be fabrication. The backing ability registry at https://cardiosense.com/wp-json/wp-abilities/v1/abilities
+    is likewise gated (HTTP 401, rest_forbidden), so not even ability names are public.
+  to_resolve: Authenticated introspection with an `mcp`-scoped token, or a published tool list from Cardiosense.
 authorization:
   discovery:
-    - https://cardiosense.com/.well-known/oauth-protected-resource
-    - https://cardiosense.com/.well-known/oauth-authorization-server
+  - https://cardiosense.com/.well-known/oauth-protected-resource
+  - https://cardiosense.com/.well-known/oauth-authorization-server
   authorization_endpoint: https://cardiosense.com/oauth/authorize
   token_endpoint: https://cardiosense.com/oauth/token
   revocation_endpoint: https://cardiosense.com/oauth/revoke
-  grant_types: [authorization_code, refresh_token]
-  pkce: [S256]
-  scopes: [mcp]
-  client_registration: >-
-    No RFC 7591 dynamic registration endpoint is advertised. Instead the server
-    sets client_id_metadata_document_supported = true, i.e. a client presents a
-    URL to its own client-ID metadata document.
+  grant_types:
+  - authorization_code
+  - refresh_token
+  pkce:
+  - S256
+  scopes:
+  - mcp
+  client_registration: No RFC 7591 dynamic registration endpoint is advertised. Instead the server sets
+    client_id_metadata_document_supported = true, i.e. a client presents a URL to its own client-ID metadata
+    document.
   see: ../authentication/cardiosense-authentication.yml
-
 related_surfaces:
-  note: >-
-    The MCP servers are exposed through the WordPress REST API on the same
-    host. The public route index at https://cardiosense.com/wp-json/ (HTTP 200)
-    enumerates 280 routes across 30 namespaces. These are CMS and plugin
-    routes, not a Cardiosense product API, and are recorded here only so the
-    surface is not mistaken for one.
+  note: The MCP servers are exposed through the WordPress REST API on the same host. The public route
+    index at https://cardiosense.com/wp-json/ (HTTP 200) enumerates 280 routes across 30 namespaces. These
+    are CMS and plugin routes, not a Cardiosense product API, and are recorded here only so the surface
+    is not mistaken for one.
   namespaces_of_interest:
-    - namespace: mcp
-      note: The two MCP servers above.
-    - namespace: wp-abilities/v1
-      note: WordPress Abilities API — the registry an MCP Adapter exposes as tools. Gated (401).
-    - namespace: ai/v1
-      note: WordPress AI provider registry. /ai/v1/providers requires a capability parameter.
-    - namespace: cs-chatbot/v1
-      note: >-
-        First-party Cardiosense namespace (cs- prefix) backing the site
-        chatbot — /chat plus /intent/{careers,contact,investor,media} and
-        /apply/upload. Documented nowhere; not probed with a POST because the
-        intent routes create records and /chat bills an LLM call.
-    - namespace: wp/v2
-      note: Stock WordPress content API, including custom post types cs_news, cs_section, team, group.
-
+  - namespace: mcp
+    note: The two MCP servers above.
+  - namespace: wp-abilities/v1
+    note: WordPress Abilities API — the registry an MCP Adapter exposes as tools. Gated (401).
+  - namespace: ai/v1
+    note: WordPress AI provider registry. /ai/v1/providers requires a capability parameter.
+  - namespace: cs-chatbot/v1
+    note: First-party Cardiosense namespace (cs- prefix) backing the site chatbot — /chat plus /intent/{careers,contact,investor,media}
+      and /apply/upload. Documented nowhere; not probed with a POST because the intent routes create records
+      and /chat bills an LLM call.
+  - namespace: wp/v2
+    note: Stock WordPress content API, including custom post types cs_news, cs_section, team, group.
 x-evidence:
   fetched: '2026-08-09'
   probes:
-    - url: https://cardiosense.com/wp-json/mcp
-      status: 200
-    - url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
-      status: 401
-    - url: https://cardiosense.com/wp-json/mcp/mcp-adapter-default-server
-      status: 401
-    - url: https://cardiosense.com/wp-json/wp-abilities/v1/abilities
-      status: 401
-    - url: https://cardiosense.com/wp-json/
-      status: 200
+  - url: https://cardiosense.com/wp-json/mcp
+    status: 200
+  - url: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
+    status: 401
+  - url: https://cardiosense.com/wp-json/mcp/mcp-adapter-default-server
+    status: 401
+  - url: https://cardiosense.com/wp-json/wp-abilities/v1/abilities
+    status: 401
+  - url: https://cardiosense.com/wp-json/
+    status: 200
+deployment:
+  mode: remote
+  endpoint: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census
