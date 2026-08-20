@@ -31,6 +31,18 @@ tags:
 - Remote Patient Monitoring
 - Wearables
 - Artificial Intelligence
+- Machine-Learning
+- MCP
+tags_raw:
+- Company
+- Health
+- Digital Health
+- Medical Devices
+- Cardiology
+- Heart Failure
+- Remote Patient Monitoring
+- Wearables
+- Artificial Intelligence
 - Machine Learning
 - Model Context Protocol
 maintainers:
@@ -51,6 +63,9 @@ apis:
   humanURL: https://cardiosense.com/
   baseURL: https://cardiosense.com/wp-json/mcp/mcp-oauth-server
   tags:
+  - MCP
+  - Agents
+  tags_raw:
   - Model Context Protocol
   - Agents
   properties:
