@@ -14,6 +14,17 @@ description: >-
   surfaces are an authored llms.txt, an extended AI-context document, an
   explicit AI-crawler allowance in robots.txt, and an OAuth-protected Model
   Context Protocol server on its own host.
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - none
+  generated: '2026-08-28'
+  method: derived
 image: https://cardiosense.com/wp-content/themes/hello-elementor-child/assets/images/social_1200.png
 url: https://raw.githubusercontent.com/api-evangelist/cardiosense/refs/heads/main/apis.yml
 x-type: company
