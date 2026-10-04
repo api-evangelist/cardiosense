@@ -56,7 +56,7 @@ tags:
 - Remote Patient Monitoring
 - Wearables
 - Artificial Intelligence
-- Machine-Learning
+- Machine Learning
 - MCP
 tags_raw:
 - Company
@@ -70,6 +70,7 @@ tags_raw:
 - Artificial Intelligence
 - Machine Learning
 - Model Context Protocol
+- Machine-Learning
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -98,6 +99,9 @@ apis:
     url: mcp/cardiosense-mcp.yml
   - type: Authentication
     url: authentication/cardiosense-authentication.yml
+  x-surface: platform-generated
+  x-platform: wordpress
+  x-platform-surface: mcp-plugin
 common:
 - type: DomainSecurity
   url: security/cardiosense-domain-security.yml
